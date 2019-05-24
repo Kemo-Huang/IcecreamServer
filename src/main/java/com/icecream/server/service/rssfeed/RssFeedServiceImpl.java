@@ -95,14 +95,14 @@ public class RssFeedServiceImpl implements RssFeedService {
     }
   }
 
-  /**
-   * Add new articles for all rss feeds in a fixed time.
-   */
-  @Scheduled(cron = "0 0 0,2,4,6,8,10,12,14,16,18,20,22 * * ?")
-  private void reloadChannels() {
-    rssFeedRepository.findAll().stream().forEach(this::addArticles);
-    logger.info("finish fixed time task!");
-  }
+//  /**
+//   * Add new articles for all rss feeds in a fixed time.
+//   */
+//  @Scheduled(cron = "0 0 0,2,4,6,8,10,12,14,16,18,20,22 * * ?")
+//  private void reloadChannels() {
+//    rssFeedRepository.findAll().stream().forEach(this::addArticles);
+//    logger.info("finish fixed time task!");
+//  }
 
   /**
    * Delete a channel.
