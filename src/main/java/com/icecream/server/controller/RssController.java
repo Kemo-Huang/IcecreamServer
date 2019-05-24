@@ -13,6 +13,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
@@ -374,36 +378,40 @@ public class RssController {
    * Return mp3 record.
    *
    * @param id       article id
-   * @param request  http request
-   * @param response http response
    * @throws Exception exception
    */
   @RequestMapping(value = {"/list/record_mp3/{id}"}, method = RequestMethod.GET)
   @ResponseBody
-  public void getOneRecordMp3(@PathVariable("id") Long id, HttpServletRequest request,
-                              HttpServletResponse response) throws Exception {
+  public ResponseEntity<Resource> getOneRecordMp3(@PathVariable("id") Long id) throws Exception {
     String path = "/media/icecream_record/" + id + "/record.mp3";
-    FileInputStream in = new FileInputStream(new File(path));
-    ServletOutputStream out = response.getOutputStream();
-    response.setContentType("audio/mpeg3");
-    byte[] b = null;
-    while (in.available() > 0) {
-      if (in.available() > 10240) {
-        b = new byte[10240];
-      } else {
-        b = new byte[in.available()];
-      }
-      out.write(b, 0, in.read(b, 0, b.length));
-    }
-    in.close();
-    out.flush();
-    out.close();
+    File file = new File(path);
+    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+    return ResponseEntity.ok()
+        .contentLength(file.length())
+        .contentType(MediaType.parseMediaType("application/octet-stream"))
+        .body(resource);
+//    FileInputStream in = new FileInputStream(new File(path));
+//    ServletOutputStream out = response.getOutputStream();
+//    response.setContentType("audio/mpeg3");
+//    byte[] b = null;
+//    while (in.available() > 0) {
+//      if (in.available() > 10240) {
+//        b = new byte[10240];
+//      } else {
+//        b = new byte[in.available()];
+//      }
+//      out.write(b, 0, in.read(b, 0, b.length));
+//    }
+//    in.close();
+//    out.flush();
+//    out.close();
   }
 
   /**
    * Return record info.
    *
-   * @param id       article id
+   * @param id article id
    * @throws Exception exception
    */
   @RequestMapping(value = {"/list/record_info/{id}"}, method = RequestMethod.GET)
