@@ -67,7 +67,6 @@ public class JwtTokenProviderTest {
   public void testGetUserIdFromJwt() throws Exception {
     User user = userService.findById(1).isPresent()?userService.findById(1).get():null;
     String token = jwtTokenProvider.generateToken(user);
-    Long id = (long)0;
     assertEquals("wrong parse id", (long)1, (long)jwtTokenProvider.getUserIdFromJwt(token));
     user = userService.findById(2).isPresent()?userService.findById(2).get():null;
     token = jwtTokenProvider.generateToken(user);
@@ -83,7 +82,6 @@ public class JwtTokenProviderTest {
   public void testValidateToken() throws Exception {
     User user = userService.findById(1).isPresent()?userService.findById(1).get():null;
     String token = jwtTokenProvider.generateToken(user);
-    Long id = (long)0;
     assertEquals("token is invalid", true, jwtTokenProvider.validateToken(
             token));
     assertEquals("token is invalid", false, jwtTokenProvider.validateToken(

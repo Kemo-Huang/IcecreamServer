@@ -18,7 +18,7 @@ public class RecordResponse {
    *
    * @author NicoleMayer
    */
-  class ArticleAndRecord {
+  static class ArticleAndRecord {
     String content;
     String recordPath;
 

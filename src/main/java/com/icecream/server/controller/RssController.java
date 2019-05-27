@@ -19,9 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -199,7 +196,6 @@ public class RssController {
     return articleResponse;
   }
 
-
   /**
    * Collected or liked articles for a user.
    *
@@ -285,69 +281,69 @@ public class RssController {
     return normalResponse;
   }
 
-  /**
-   * Like a new article.
-   *
-   * @param token verification for user
-   * @return NormalResponse
-   */
-  @RequestMapping(value = {"/like/article/{id}"}, method = RequestMethod.GET)
-  public NormalResponse likeArticle(@PathVariable("id") Long id, String token) {
-    Long userId = userService.verifyToken(token);
-    NormalResponse normalResponse = new NormalResponse("collect a article");
-    if (userId == null) {
-      normalResponse.setMsgCode(0);
-      normalResponse.setMessage(WRONG_TOKEN);
-      return normalResponse;
-    }
-    User user = userService.findById(userId).orElse(null);
-    if (user == null) {
-      normalResponse.setMsgCode(1);
-      normalResponse.setMessage(USER_NOT_FOUND);
-      return normalResponse;
-    }
-
-    if (!articleService.likeArticle(user, id)) {
-      normalResponse.setMsgCode(2);
-      normalResponse.setMessage("like failed");
-    } else {
-      normalResponse.setMsgCode(3);
-      normalResponse.setMessage("like succeed");
-    }
-    return normalResponse;
-  }
-
-  /**
-   * Unlike a new article.
-   *
-   * @param token verification for user
-   * @return NormalResponse
-   */
-  @RequestMapping(value = {"/unlike/article/{id}"}, method = RequestMethod.GET)
-  public NormalResponse unlikeArticle(@PathVariable("id") Long id, String token) {
-    Long userId = userService.verifyToken(token);
-    NormalResponse normalResponse = new NormalResponse("uncollect a article");
-    if (userId == null) {
-      normalResponse.setMsgCode(0);
-      normalResponse.setMessage(WRONG_TOKEN);
-      return normalResponse;
-    }
-    User user = userService.findById(userId).orElse(null);
-    if (user == null) {
-      normalResponse.setMsgCode(1);
-      normalResponse.setMessage(USER_NOT_FOUND);
-      return normalResponse;
-    }
-
-    if (!articleService.unlikeArticle(user, id)) {
-      normalResponse.setMsgCode(2);
-      normalResponse.setMessage("unlike failed");
-    } else {
-      normalResponse.setMsgCode(3);
-      normalResponse.setMessage("unlike succeed");
-    }
-    return normalResponse;
-  }
+//  /**
+//   * Like a new article.
+//   *
+//   * @param token verification for user
+//   * @return NormalResponse
+//   */
+//  @RequestMapping(value = {"/like/article/{id}"}, method = RequestMethod.GET)
+//  public NormalResponse likeArticle(@PathVariable("id") Long id, String token) {
+//    Long userId = userService.verifyToken(token);
+//    NormalResponse normalResponse = new NormalResponse("collect a article");
+//    if (userId == null) {
+//      normalResponse.setMsgCode(0);
+//      normalResponse.setMessage(WRONG_TOKEN);
+//      return normalResponse;
+//    }
+//    User user = userService.findById(userId).orElse(null);
+//    if (user == null) {
+//      normalResponse.setMsgCode(1);
+//      normalResponse.setMessage(USER_NOT_FOUND);
+//      return normalResponse;
+//    }
+//
+//    if (!articleService.likeArticle(user, id)) {
+//      normalResponse.setMsgCode(2);
+//      normalResponse.setMessage("like failed");
+//    } else {
+//      normalResponse.setMsgCode(3);
+//      normalResponse.setMessage("like succeed");
+//    }
+//    return normalResponse;
+//  }
+//
+//  /**
+//   * Unlike a new article.
+//   *
+//   * @param token verification for user
+//   * @return NormalResponse
+//   */
+//  @RequestMapping(value = {"/unlike/article/{id}"}, method = RequestMethod.GET)
+//  public NormalResponse unlikeArticle(@PathVariable("id") Long id, String token) {
+//    Long userId = userService.verifyToken(token);
+//    NormalResponse normalResponse = new NormalResponse("uncollect a article");
+//    if (userId == null) {
+//      normalResponse.setMsgCode(0);
+//      normalResponse.setMessage(WRONG_TOKEN);
+//      return normalResponse;
+//    }
+//    User user = userService.findById(userId).orElse(null);
+//    if (user == null) {
+//      normalResponse.setMsgCode(1);
+//      normalResponse.setMessage(USER_NOT_FOUND);
+//      return normalResponse;
+//    }
+//
+//    if (!articleService.unlikeArticle(user, id)) {
+//      normalResponse.setMsgCode(2);
+//      normalResponse.setMessage("unlike failed");
+//    } else {
+//      normalResponse.setMsgCode(3);
+//      normalResponse.setMessage("unlike succeed");
+//    }
+//    return normalResponse;
+//  }
 
 
   /**
@@ -391,21 +387,6 @@ public class RssController {
         .contentLength(file.length())
         .contentType(MediaType.parseMediaType("application/octet-stream"))
         .body(resource);
-//    FileInputStream in = new FileInputStream(new File(path));
-//    ServletOutputStream out = response.getOutputStream();
-//    response.setContentType("audio/mpeg3");
-//    byte[] b = null;
-//    while (in.available() > 0) {
-//      if (in.available() > 10240) {
-//        b = new byte[10240];
-//      } else {
-//        b = new byte[in.available()];
-//      }
-//      out.write(b, 0, in.read(b, 0, b.length));
-//    }
-//    in.close();
-//    out.flush();
-//    out.close();
   }
 
   /**
